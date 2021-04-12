@@ -1,2 +1,2 @@
-# go-imageclassifierapi
-ImageClassifier written in Golang
+# tfapi-go
+ImageClassifier written in Golang and ReactJS
