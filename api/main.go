@@ -43,6 +43,13 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 	w.Write([]byte("Welcome to the Homepage!"))
 }
 
+func healthCheckHandler(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json")
+
+	io.WriteString(w, `{"alive": true}`)
+}
+
 func handleRequests() {
 
 	router := mux.NewRouter().StrictSlash(true)
@@ -51,6 +58,7 @@ func handleRequests() {
 	headers := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 
 	router.HandleFunc("/", homePage).Methods("GET")
+	router.HandleFunc("/health", healthCheckHandler).Methods("GET")
 	router.HandleFunc("/classify", classifyHandler).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":3000", handlers.CORS(headers, methods, origins)(router)))
